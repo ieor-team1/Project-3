@@ -67,13 +67,19 @@ public class ScanRecorder
          if (angle != oldAngle)
          {
             light = _eye.getLightValue();
+            compareLight(light, angle);
             oldAngle = angle;
-            dl.writeLog(angle);
-            dl.writeLog(light);
          }
 
          Thread.yield();
       }
+   }
+   
+   public void compareLight(int light, int angle){
+	   if(light > _maxLight){
+		   _maxLight = light;
+		   _targetBearing = angle;
+	   }
    }
 /**
     * rotate the scanner head to the angle
@@ -96,15 +102,18 @@ public class ScanRecorder
     * scan between -90 and 90 degrees
     * @param args 
     */
-   public static void main(String[] args)
+   public int scan()
    {
       ScanRecorder s = new ScanRecorder(Motor.B, new LightSensor(SensorPort.S2));
-      Button.waitForAnyPress();
+      //Button.waitForAnyPress();
       s.rotateTo(-90);
       s.scanTo(90);
+      int angle1 = s.getTargetBearing();
       s.scanTo(-90);
+      int angle2 = s.getTargetBearing();
       s.rotateTo(0);
-      s.dl.transmit();  // use usb
+      return ( angle1+angle2 ) / 2;
+      //s.dl.transmit();  // use usb
    }
    /******* instance variabled ***************/
    NXTRegulatedMotor motor;
@@ -112,5 +121,4 @@ public class ScanRecorder
    int _targetBearing;
    int _maxLight;
    boolean _found = false;
-   Datalogger dl = new Datalogger();
 }
