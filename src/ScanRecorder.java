@@ -109,10 +109,10 @@ public class ScanRecorder
       s.rotateTo(-90);
       s.scanTo(90);
       int angle1 = s.getTargetBearing();
-      s.scanTo(-90);
-      int angle2 = s.getTargetBearing();
-      s.rotateTo(0);
-      return ( angle1+angle2 ) / 2;
+      //s.scanTo(-90);
+      //int angle2 = s.getTargetBearing();
+      //return ( angle1+angle2 ) / 2;
+      return angle1;
       //s.dl.transmit();  // use usb
    }
    /******* instance variabled ***************/
