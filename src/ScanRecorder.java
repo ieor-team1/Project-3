@@ -104,10 +104,9 @@ public class ScanRecorder
     */
    public int scan()
    {
-      ScanRecorder s = new ScanRecorder(Motor.B, new LightSensor(SensorPort.S2));
-      s.rotateTo(-90);
-      int maxPrinting = s.scanTo(90);
-      _angle1 = s.getTargetBearing();
+      rotateTo(-90);
+      int maxPrinting = scanTo(90);
+      _angle1 = getTargetBearing();
       
       //s.scanTo(-90);
 
