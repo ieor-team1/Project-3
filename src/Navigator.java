@@ -1,3 +1,4 @@
+import lejos.nxt.Button;
 import lejos.nxt.LightSensor;
 import lejos.nxt.Motor;
 import lejos.nxt.SensorPort;
@@ -14,13 +15,14 @@ public class Navigator {
 	ScanRecorder s = new ScanRecorder(Motor.B, lightSensor);
 	double gain = 0.5f;
 	public void go(){
-		while(true){
-	      int angle = s.scan();
-	      if(s.getLight()>46){
+	      int maxLight = s.scan();
+	      System.out.println("Max Light = " + maxLight + " Angle =" + s._angle1);
+	      if(maxLight>46){
 	    	  pilot.rotate(180);
-	      }
-	      pilot.steer(angle*gain);
+	
+	      pilot.steer(s._angle1*gain);
 		}
+	      Button.waitForAnyPress();
 	}
 	
 }

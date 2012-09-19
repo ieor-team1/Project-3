@@ -56,31 +56,31 @@ public class ScanRecorder
     * light sensor value to the datalog
     * @param limitAngle 
     */
-   public void scanTo(int limitAngle)
+   public int scanTo(int limitAngle)
    {
       int oldAngle = motor.getTachoCount();
       motor.rotateTo(limitAngle, true);
-      int light = 0;
+      light = 0;
+      _maxLight=0;
       while (motor.isMoving())
       {
          short angle = (short) motor.getTachoCount();
          if (angle != oldAngle)
          {
             light = _eye.getLightValue();
-            compareLight(light, angle);
+     	   if(light > _maxLight){
+    		   _maxLight = light;
+    		   _targetBearing = angle;
+    	   }
             oldAngle = angle;
          }
-
-         Thread.yield();
+         //Thread.yield();
       }
+      System.out.println(_maxLight);
+      return _maxLight;
    }
    
-   public void compareLight(int light, int angle){
-	   if(light > _maxLight){
-		   _maxLight = light;
-		   _targetBearing = angle;
-	   }
-   }
+
 /**
     * rotate the scanner head to the angle
     * @param angle
@@ -105,20 +105,21 @@ public class ScanRecorder
    public int scan()
    {
       ScanRecorder s = new ScanRecorder(Motor.B, new LightSensor(SensorPort.S2));
-      //Button.waitForAnyPress();
       s.rotateTo(-90);
-      s.scanTo(90);
-      int angle1 = s.getTargetBearing();
+      int maxPrinting = s.scanTo(90);
+      _angle1 = s.getTargetBearing();
+      
       //s.scanTo(-90);
-      //int angle2 = s.getTargetBearing();
-      //return ( angle1+angle2 ) / 2;
-      return angle1;
-      //s.dl.transmit();  // use usb
+
+      return maxPrinting;
    }
    /******* instance variabled ***************/
    NXTRegulatedMotor motor;
    LightSensor _eye;
    int _targetBearing;
    int _maxLight;
+   int light;
+   int maxPrinting;
    boolean _found = false;
+   int _angle1;
 }
