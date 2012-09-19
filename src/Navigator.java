@@ -22,7 +22,6 @@ public class Navigator {
 	    	  pilot.rotate(180);
 	      }
 	      pilot.steer(s._angle1*gain);
-	      Button.waitForAnyPress();
 	}
 	}
 	
