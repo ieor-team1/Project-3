@@ -5,24 +5,27 @@ import lejos.nxt.SensorPort;
 import lejos.robotics.navigation.DifferentialPilot;
 
 
-public class Navigator {
+public class Navigator { //uses ScanRecorder, Pilot and LightSensor classes to get the data from the sensors and control the robot 
 	
-	float wheelDiameter =  5.6f;
+	float wheelDiameter =  5.6f; //data for DifferentialPilot class
     float trackWidth = 11.4f;
-    LightSensor lightSensor = new LightSensor(SensorPort.S4);   
-	DifferentialPilot pilot = new DifferentialPilot(wheelDiameter, trackWidth, Motor.A, Motor.C);
+    LightSensor lightSensor = new LightSensor(SensorPort.S4); //  
+	DifferentialPilot pilot = new DifferentialPilot(wheelDiameter, trackWidth, Motor.A, Motor.C); //Pilot class 
 	ScanRecorder s = new ScanRecorder(Motor.B, lightSensor);
-	double gain = 1f;
+	int i = 0; //Changes scan sweep direction. Pass it to the ScanRecorder by Scan(i)
+	double gain = 1.3f; //control the 
 	public void go(){
 		pilot.setTravelSpeed(50);
 		while(true){
-	      int maxLight = s.scan();
-	      System.out.println("Max Light = " + maxLight + " Angle =" + s._angle1);
+			s.setSpeed(700);
+	      int maxLight = s.scan(i); 
+	      System.out.println("Max Light = " + maxLight + " Angle =" + s._angle1 + i);
 	      if(maxLight>55){
 	    	  pilot.stop();
 	    	  pilot.rotate(180);
 	      }
 	      pilot.steer(-s._angle1*gain);
+	      i++;
 	}
 	}
 	

@@ -99,13 +99,12 @@ public class ScanRecorder
       rotateTo(angle, false);
    }
 /**
-    * scan between -90 and 90 degrees
+    * scan between -80 and 80 degrees
     * @param args 
     */
-   public int scan()
+   public int scan(int i)
    {
-      rotateTo(-90);
-      int maxPrinting = scanTo(90);
+      int maxPrinting = scanTo((int) Math.pow(-1, i) * 80);
       _angle1 = getTargetBearing();
       
       //s.scanTo(-90);
