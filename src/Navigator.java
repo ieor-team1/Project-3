@@ -14,7 +14,7 @@ public class Navigator {
 	ScanRecorder s = new ScanRecorder(Motor.B, lightSensor);
 	double gain = 1f;
 	public void go(){
-		pilot.setTravelSpeed(30);
+		pilot.setTravelSpeed(50);
 		while(true){
 	      int maxLight = s.scan();
 	      System.out.println("Max Light = " + maxLight + " Angle =" + s._angle1);
